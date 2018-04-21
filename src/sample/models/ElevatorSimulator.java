@@ -120,7 +120,7 @@ public class ElevatorSimulator {
         //Reset Starting Conditions
         riderCount = 0;
         for (int i = 0; i < riders.size(); i++)
-            riders.get(i).setFrustration(0);//clear frustration
+            riders.get(i).clearFrustration();//clear frustration
         for (int i = 0; i < floors.length; i++)
             while (!floors[i].isEmpty())
                 floors[i].remove();//clear riders from all floors

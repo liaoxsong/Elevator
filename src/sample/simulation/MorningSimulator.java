@@ -13,10 +13,12 @@ import java.util.*;
 public class MorningSimulator {
 
 
+    static boolean shouldWaitingInQueueFrustrate = false;
+
     private static List<Rider> riders = RiderFactory.createAllRiders();
 
     private static PriorityQueue<Rider>[] floors = FloorFactory.createFloors(5);
-    
+
     public static void main(String []args) {
         Elevator elevator = new Elevator(5);
         int riderCount = 0;
@@ -34,8 +36,9 @@ public class MorningSimulator {
                 }
             }
 
-            Collections.sort(newRiders);
+            Collections.sort(newRiders);//vip can move to front
             floors[0].addAll(newRiders);
+
 
             //Pop riders for elevator's current floor
             while (elevator.peek() != null && elevator.peek().getHomeFloor() == elevator.getCurrentFloor()) {
@@ -54,6 +57,13 @@ public class MorningSimulator {
 
                 elevator.push(floors[elevator.getCurrentFloor() - 1].remove());
 
+            //lol the rest of the suckers on the queue waiting frustrate
+            if (shouldWaitingInQueueFrustrate) {
+                for(Rider r: floors[0]) {
+                    r.frustrate();
+                }
+            }
+
             //System.out.println("ELEVATOR BEFORE MOVE: " + elevator);
 
             //Move elevator
@@ -63,6 +73,25 @@ public class MorningSimulator {
                 elevator.setCurrentFloor(1);
 
             System.out.println("ELEVATOR AT END: " + elevator);
+
         }
+
+
+        //Output
+        int result = 0;
+        int resultVIP = 0;
+        int resultNoVIP = 0;
+        for (Rider rider : riders) {
+            result += rider.getFrustration();
+            if (rider.isVIP())
+                resultVIP += rider.getFrustration();
+            else
+                resultNoVIP += rider.getFrustration();
+        }
+
+        System.out.println("AM MODE:\n\tAverage (MEAN) Frustration Level is: " + ((double) result / riders.size()));
+        System.out.println("AM MODE:\n\tAverage (MEAN) VIP Frustration Level is: " + ((double) resultVIP / (riders.size() / 10)));
+        System.out.println("AM MODE:\n\tAverage (MEAN) Non-VIP Frustration Level is: " + ((double) resultNoVIP / (riders.size() * .9)));
+
     }
 }

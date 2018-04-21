@@ -75,7 +75,8 @@ public class Elevator
         for (Rider e : stack)
         {
             if (e != null)
-                e.setFrustration(e.getFrustration() + 1);
+                e.frustrate();
+
         }
     }
 

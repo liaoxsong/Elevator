@@ -99,9 +99,13 @@ public class Rider implements Comparable
         return frustration;
     }
 
-    public void setFrustration(int frustration)
+    public void frustrate() {
+        this.frustration ++;
+    }
+
+    public void clearFrustration()
     {
-        this.frustration = frustration;
+        this.frustration = 0;
     }
 
     public int getId()
